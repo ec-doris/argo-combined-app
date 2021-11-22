@@ -1,10 +1,10 @@
-FROM klakegg/hugo:0.78.2-alpine
-RUN apk add -U git
-COPY . /src
-RUN make init
-RUN make build
-
-FROM nginx:1.19.4-alpine
-RUN mv /usr/share/nginx/html/index.html /usr/share/nginx/html/old-index.html
-COPY --from=0 /src/public /usr/share/nginx/html
-EXPOSE 80
+# nginx state for serving content
+FROM nginx:alpine
+# Set working directory to nginx asset directory
+WORKDIR /usr/share/nginx/html
+# Remove default nginx static assets
+RUN rm -rf ./*
+# Copy static assets over
+COPY ./web/* ./
+# Containers run nginx with global directives and daemon off
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
