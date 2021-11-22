@@ -13,6 +13,8 @@ spec:
       labels:
         app: argo-combined-app
     spec:
+      imagePullSecrets:
+      - name: regcred
       containers:
       - name: argo-combined-app
         image: raphdom/argo-combined-app
